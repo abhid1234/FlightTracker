@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Search, Plane } from "lucide-react";
 import { FlightCard } from "@/components/FlightCard";
 import dynamic from "next/dynamic";
@@ -65,6 +66,16 @@ export default function Home() {
                         className="w-24 h-auto sm:w-30 hover:scale-105 transition-transform duration-300"
                     />
                 </div>
+            </div>
+
+            {/* Architecture Link in upper right corner */}
+            <div className="fixed top-4 right-4 sm:top-8 sm:right-8 z-20">
+                <Link
+                    href="/architecture"
+                    className="px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 rounded-xl text-white font-medium transition-all duration-300 hover:scale-105 shadow-lg"
+                >
+                    Architecture
+                </Link>
             </div>
 
             {/* Background Elements */}
