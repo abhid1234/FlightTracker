@@ -342,7 +342,7 @@ export default function Home() {
                     ) : searched ? (
                         <div className="text-gray-500 text-center p-8 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm">
                             <p className="text-xl font-semibold mb-2">No flights found</p>
-                            <p className="text-sm">Try searching for "AA100", "BA456", or "UA789"</p>
+                            <p className="text-sm">Try searching for &quot;AA100&quot;, &quot;BA456&quot;, or &quot;UA789&quot;</p>
                         </div>
                     ) : null}
                 </div>

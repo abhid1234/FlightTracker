@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Search, Plane } from "lucide-react";
+import { ArrowLeft, Search, Plane, Calendar } from "lucide-react";
 
 interface AirportFlight {
     flight: { iata: string; number: string };
@@ -47,6 +47,7 @@ export default function AirportDashboard() {
     };
 
     // Auto-refresh when tabs switch if we have a code
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         if (searchedCode) {
             fetchFlights(searchedCode, mode, selectedDate);
@@ -96,14 +97,15 @@ export default function AirportDashboard() {
                             maxLength={4}
                         />
                         <div className="relative w-1/2 group">
-                            <div className="absolute inset-0 bg-white/10 border border-white/20 rounded-xl px-4 py-3 flex items-center justify-between pointer-events-none group-focus-within:border-blue-500 group-focus-within:bg-white/20 transition-all">
-                                <span className={`text-${selectedDate ? 'white' : 'gray-400'}`}>
+                            <div className="absolute inset-0 bg-white/10 border border-white/20 rounded-xl px-4 py-3 flex items-center justify-between pointer-events-none group-focus-within:border-blue-500 group-focus-within:bg-white/20 transition-all hover:bg-white/20 hover:border-white/40 shadow-lg">
+                                <span className={`font-medium ${selectedDate ? 'text-white' : 'text-gray-400'}`}>
                                     {selectedDate ? new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', {
                                         year: 'numeric',
                                         month: '2-digit',
                                         day: '2-digit'
-                                    }) : 'MM/DD/YYYY'}
+                                    }) : 'Select Date'}
                                 </span>
+                                <Calendar className="w-5 h-5 text-blue-400" />
                             </div>
                             <input
                                 type="date"
