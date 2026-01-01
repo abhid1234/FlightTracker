@@ -8,6 +8,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 COPY package.json package-lock.json* ./
 RUN npm install
 
