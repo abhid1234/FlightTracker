@@ -24,7 +24,7 @@ export async function GET(request: Request) {
             apiUrl += `&flight_date=${dateParam}`;
         }
 
-        console.log(`Fetching airport data: ${apiUrl}`);
+        console.log(`Fetching airport data: ${apiUrl.replace(API_KEY, '[REDACTED]')}`);
         const res = await fetch(apiUrl);
         const data = await res.json();
 

@@ -53,7 +53,7 @@ export async function GET(request: Request) {
         if (date) {
             apiUrl += `&flight_date=${date}`;
         }
-        console.log(`Fetching from: ${apiUrl}`);
+        console.log(`Fetching from: ${apiUrl.replace(API_KEY, '[REDACTED]')}`);
 
         const res = await fetch(apiUrl);
         const data = await res.json();
