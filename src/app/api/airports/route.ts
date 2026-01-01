@@ -16,7 +16,7 @@ export async function GET(request: Request) {
 
     try {
         const param = type === 'departure' ? 'dep_iata' : 'arr_iata';
-        let apiUrl = `http://api.aviationstack.com/v1/flights?access_key=${API_KEY}&${param}=${code}&limit=100`;
+        let apiUrl = `http://api.aviationstack.com/v1/flights?access_key=${API_KEY}&${param}=${code}&limit=300`;
 
         // Pass date filter upstream to get historical data
         const dateParam = searchParams.get('date');
