@@ -95,12 +95,23 @@ export default function AirportDashboard() {
                             className="w-1/2 bg-white/10 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:bg-white/20 transition-all text-white scheme-dark placeholder-gray-400"
                             maxLength={4}
                         />
-                        <input
-                            type="date"
-                            value={selectedDate}
-                            onChange={(e) => setSelectedDate(e.target.value)}
-                            className="w-1/2 bg-white/10 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:bg-white/20 transition-all text-white scheme-dark"
-                        />
+                        <div className="relative w-1/2 group">
+                            <div className="absolute inset-0 bg-white/10 border border-white/20 rounded-xl px-4 py-3 flex items-center justify-between pointer-events-none group-focus-within:border-blue-500 group-focus-within:bg-white/20 transition-all">
+                                <span className={`text-${selectedDate ? 'white' : 'gray-400'}`}>
+                                    {selectedDate ? new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit'
+                                    }) : 'MM/DD/YYYY'}
+                                </span>
+                            </div>
+                            <input
+                                type="date"
+                                value={selectedDate}
+                                onChange={(e) => setSelectedDate(e.target.value)}
+                                className="w-full h-full opacity-0 cursor-pointer py-3 rounded-xl z-10 relative"
+                            />
+                        </div>
                         <button type="submit" className="p-3 bg-blue-500/80 hover:bg-blue-500 rounded-xl transition-colors">
                             <Search className="w-5 h-5 text-white" />
                         </button>
