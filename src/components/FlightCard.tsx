@@ -117,6 +117,24 @@ export function FlightCard({ flight }: FlightCardProps) {
         return `${hours}h ${minutes}m`;
     };
 
+    // Helper to detect if landing is on a different calendar day (face value)
+    const getDateDiff = (start: string, end: string) => {
+        try {
+            const startDate = getLocalTimeParts(start);
+            const endDate = getLocalTimeParts(end);
+
+            // Reset hours to compare only the dates
+            startDate.setHours(0, 0, 0, 0);
+            endDate.setHours(0, 0, 0, 0);
+
+            const diffTime = endDate.getTime() - startDate.getTime();
+            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        } catch (e) {
+            return 0;
+        }
+    };
+
     // Helper to get aircraft image
     const getAircraftImage = (model: string | undefined) => {
         if (!model) return 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop'; // Generic beautiful plane
@@ -140,6 +158,7 @@ export function FlightCard({ flight }: FlightCardProps) {
 
     const originTime = formatTime(flight.origin.time, flight.origin.timezone);
     const destTime = formatTime(flight.destination.time, flight.destination.timezone);
+    const dateDiff = getDateDiff(flight.origin.time, flight.destination.time);
     const bgImage = getAircraftImage(flight.aircraft?.model);
 
     return (
@@ -219,8 +238,15 @@ export function FlightCard({ flight }: FlightCardProps) {
                             </div>
                         )}
                         <div className="flex flex-col items-end">
-                            <div className="text-3xl font-bold text-white">
-                                {destTime.time}
+                            <div className="flex items-baseline gap-1">
+                                <div className="text-3xl font-bold text-white">
+                                    {destTime.time}
+                                </div>
+                                {dateDiff > 0 && (
+                                    <span className="text-sm font-bold text-purple-400 bg-purple-500/10 px-1.5 py-0.5 rounded border border-purple-500/20">
+                                        +{dateDiff}
+                                    </span>
+                                )}
                             </div>
                             <div className="text-sm font-medium text-purple-400">{destTime.tz}</div>
                         </div>
