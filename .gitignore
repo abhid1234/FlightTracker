@@ -32,3 +32,6 @@ ts-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# blog post
+/Flight_Tracker_Blog_Post.textbundle/
