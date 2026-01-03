@@ -97,7 +97,7 @@ export default function AirportDashboard() {
                             maxLength={4}
                         />
                         <div className="relative w-1/2 group">
-                            <div className="absolute inset-0 bg-white/10 border border-white/20 rounded-xl px-4 py-3 flex items-center justify-between pointer-events-none group-focus-within:border-blue-500 group-focus-within:bg-white/20 transition-all hover:bg-white/20 hover:border-white/40 shadow-lg">
+                            <div className="bg-white/10 border border-white/20 rounded-xl px-4 py-3 flex items-center justify-between group-focus-within:border-blue-500 group-focus-within:bg-white/20 transition-all hover:bg-white/20 hover:border-white/40 shadow-lg">
                                 <span className={`font-medium ${selectedDate ? 'text-white' : 'text-gray-400'}`}>
                                     {selectedDate ? new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', {
                                         year: 'numeric',
@@ -111,7 +111,7 @@ export default function AirportDashboard() {
                                 type="date"
                                 value={selectedDate}
                                 onChange={(e) => setSelectedDate(e.target.value)}
-                                className="w-full h-full opacity-0 cursor-pointer py-3 rounded-xl z-10 relative"
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 appearance-none bg-transparent"
                             />
                         </div>
                         <button type="submit" className="p-3 bg-blue-500/80 hover:bg-blue-500 rounded-xl transition-colors">
