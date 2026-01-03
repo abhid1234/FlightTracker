@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowLeft, Search, Plane, Calendar } from "lucide-react";
 
@@ -41,9 +41,26 @@ export default function AirportDashboard() {
         }
     };
 
+    const dateInputRef = useRef<HTMLInputElement>(null);
+
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         fetchFlights(airportCode, mode, selectedDate);
+    };
+
+    const triggerDatePicker = () => {
+        if (dateInputRef.current) {
+            // Modern browsers support showPicker()
+            if ('showPicker' in HTMLInputElement.prototype) {
+                try {
+                    dateInputRef.current.showPicker();
+                } catch (e) {
+                    dateInputRef.current.click();
+                }
+            } else {
+                dateInputRef.current.click();
+            }
+        }
     };
 
     // Auto-refresh when tabs switch if we have a code
@@ -96,7 +113,10 @@ export default function AirportDashboard() {
                             className="w-1/2 bg-white/10 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:bg-white/20 transition-all text-white scheme-dark placeholder-gray-400"
                             maxLength={4}
                         />
-                        <div className="relative w-1/2 group">
+                        <div
+                            className="relative w-1/2 group cursor-pointer"
+                            onClick={triggerDatePicker}
+                        >
                             <div className="bg-white/10 border border-white/20 rounded-xl px-4 py-3 flex items-center justify-between group-focus-within:border-blue-500 group-focus-within:bg-white/20 transition-all hover:bg-white/20 hover:border-white/40 shadow-lg">
                                 <span className={`font-medium ${selectedDate ? 'text-white' : 'text-gray-400'}`}>
                                     {selectedDate ? new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', {
@@ -108,10 +128,11 @@ export default function AirportDashboard() {
                                 <Calendar className="w-5 h-5 text-blue-400" />
                             </div>
                             <input
+                                ref={dateInputRef}
                                 type="date"
                                 value={selectedDate}
                                 onChange={(e) => setSelectedDate(e.target.value)}
-                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 appearance-none bg-transparent"
+                                className="absolute inset-0 w-full h-full opacity-0 pointer-events-none"
                             />
                         </div>
                         <button type="submit" className="p-3 bg-blue-500/80 hover:bg-blue-500 rounded-xl transition-colors">
