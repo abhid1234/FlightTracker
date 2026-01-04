@@ -158,6 +158,20 @@ export default function AirportDashboard() {
                     </div>
                 </div>
 
+                {selectedDate && new Date(selectedDate + 'T00:00:00') > new Date(new Date().setHours(0, 0, 0, 0)) && (
+                    <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 flex items-start gap-4 backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-300">
+                        <div className="p-2 bg-amber-500/20 rounded-lg">
+                            <Calendar className="w-5 h-5 text-amber-500" />
+                        </div>
+                        <div>
+                            <h3 className="text-amber-400 font-bold mb-1">API Limitation: Future Dates</h3>
+                            <p className="text-amber-200/80 text-sm leading-relaxed">
+                                The free tier API primarily provides live and near-live data. Flight schedules for future dates might be incomplete or unavailable.
+                            </p>
+                        </div>
+                    </div>
+                )}
+
                 {/* Flight Board */}
                 {searchedCode && (
                     <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
@@ -244,6 +258,6 @@ export default function AirportDashboard() {
             </div>
 
 
-        </main>
+        </main >
     );
 }
