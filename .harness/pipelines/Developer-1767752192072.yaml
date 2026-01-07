@@ -20,6 +20,23 @@ pipeline:
           execution:
             steps:
               - step:
+                  type: Run
+                  name: npm config
+                  identifier: npmconfig
+                  spec:
+                    shell: Bash
+                    command: |
+                      # Set up npm authentication
+                      echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
+                      echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+                      echo "always-auth=true" >> ~/.npmrc
+
+                      # Verify npm configuration
+                      npm config list
+                    envVariables:
+                      NPM_AUTH_TOKEN: <+secrets.getValue("NPM_AUTH_TOKEN")>
+                  timeout: 10m
+              - step:
                   identifier: installdependencies
                   name: install dependencies
                   spec:
@@ -51,10 +68,15 @@ pipeline:
                       - latest
                   timeout: ""
                   type: BuildAndPushDockerRegistry
+            rollbackSteps: []
           platform:
             arch: Amd64
             os: Linux
           runtime:
-            spec: {}
+            spec:
+              imageName: node:18.17.0
             type: Cloud
         type: CI
+  description: This pipeline was updated by Harness AI on 2026-01-07 02:37:46 UTC by Abhi Das.
+  tags:
+    ai_generated: "true"
