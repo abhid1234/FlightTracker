@@ -8,7 +8,7 @@ pipeline:
       codebase:
         build: <+input>
         connectorRef: account.Github
-        repoName: abhid1234/Developer
+        repoName: abhid1234/FlightTracker
   stages:
     - stage:
         identifier: build1
