@@ -44,4 +44,4 @@ pipeline:
                     projectID: elegant-cipher-335206
                     imageName: flight-tracker
                     tags:
-                      - gcr.io/elegant-cipher-335206/flight-tracker
+                      - latest
