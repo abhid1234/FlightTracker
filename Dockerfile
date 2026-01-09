@@ -10,7 +10,7 @@ WORKDIR /app
 # Install dependencies based on the preferred package manager
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 COPY package.json package-lock.json* .npmrc* ./
-RUN npm install
+RUN npm install --registry=https://registry.npmjs.org/
 
 
 # Rebuild the source code only when needed
