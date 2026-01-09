@@ -20,23 +20,6 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: Run
-                  name: npm config
-                  identifier: npmconfig
-                  spec:
-                    shell: Bash
-                    command: |
-                      # Set up npm authentication
-                      echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
-                      echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
-                      echo "always-auth=true" >> ~/.npmrc
-
-                      # Verify npm configuration
-                      npm config list
-                    envVariables:
-                      NPM_AUTH_TOKEN: <+secrets.getValue("NPM_AUTH_TOKEN")>
-                  timeout: 10m
-              - step:
                   identifier: installdependencies
                   name: install dependencies
                   spec:
