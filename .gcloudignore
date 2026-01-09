@@ -6,5 +6,4 @@ public/blog_images
 .gitignore
 node_modules
 .env.local
-package-lock.json
-.npmrc
+
