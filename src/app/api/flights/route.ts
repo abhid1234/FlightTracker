@@ -49,9 +49,9 @@ export async function GET(request: Request) {
     }
 
     try {
-        let apiUrl = `http://api.aviationstack.com/v1/flights?access_key=${API_KEY}&flight_iata=${query}&limit=100`;
+        let apiUrl = `https://api.aviationstack.com/v1/flights?access_key=${API_KEY}&flight_iata=${encodeURIComponent(query)}&limit=100`;
         if (date) {
-            apiUrl += `&flight_date=${date}`;
+            apiUrl += `&flight_date=${encodeURIComponent(date)}`;
         }
         console.log(`Fetching from: ${apiUrl.replace(API_KEY, '[REDACTED]')}`);
 
