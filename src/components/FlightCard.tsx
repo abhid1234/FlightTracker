@@ -1,5 +1,6 @@
 import React from 'react';
-import { Plane, Clock, MapPin, Calendar } from 'lucide-react';
+import { Plane, Clock, MapPin, Calendar, Leaf } from 'lucide-react';
+import { calculateFlightEmissions } from '@/lib/airports';
 
 interface Flight {
     flightNumber: string;
@@ -160,6 +161,9 @@ export function FlightCard({ flight }: FlightCardProps) {
     const destTime = formatTime(flight.destination.time, flight.destination.timezone);
     const dateDiff = getDateDiff(flight.origin.time, flight.destination.time);
     const bgImage = getAircraftImage(flight.aircraft?.model);
+    
+    // Carbon Footprint Calculation
+    const emissions = calculateFlightEmissions(flight.origin.code, flight.destination.code);
 
     return (
         <div className="w-full relative overflow-hidden rounded-2xl shadow-xl my-4 group">
@@ -175,7 +179,7 @@ export function FlightCard({ flight }: FlightCardProps) {
 
             {/* Content Container */}
             <div className="relative z-10 p-6 text-white border border-white/10 rounded-2xl">
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex justify-between items-start mb-6">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-blue-500/20 rounded-lg backdrop-blur-md">
                             <Plane className="w-5 h-5 text-blue-400" />
@@ -187,12 +191,20 @@ export function FlightCard({ flight }: FlightCardProps) {
                             )}
                         </div>
                     </div>
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md border border-white/10 ${flight.status === 'Active' ? 'bg-green-500/20 text-green-300' :
-                        flight.status === 'Delayed' ? 'bg-red-500/20 text-red-300' :
-                            'bg-blue-500/20 text-blue-300'
-                        }`}>
-                        {flight.status.toUpperCase()}
-                    </span>
+                    <div className="flex flex-col items-end gap-2">
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md border border-white/10 ${flight.status === 'Active' ? 'bg-green-500/20 text-green-300' :
+                            flight.status === 'Delayed' ? 'bg-red-500/20 text-red-300' :
+                                'bg-blue-500/20 text-blue-300'
+                            }`}>
+                            {flight.status.toUpperCase()}
+                        </span>
+                        {emissions && (
+                            <div className="flex items-center gap-1.5 px-2 py-1 bg-emerald-500/10 rounded-lg border border-emerald-500/20 text-[10px] text-emerald-300 font-medium backdrop-blur-sm" title="Estimated Carbon Footprint per passenger">
+                                <Leaf className="w-3 h-3" />
+                                <span>{emissions.co2Kg} kg CO₂</span>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 <div className="flex justify-between items-center relative">
