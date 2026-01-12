@@ -1,0 +1,35 @@
+trigger:
+  name: Push to Main
+  identifier: Push_to_Main
+  enabled: true
+  description: ""
+  tags: {}
+  projectIdentifier: default_project
+  orgIdentifier: default
+  pipelineIdentifier: FlightTracker_Pipeline
+  source:
+    type: Webhook
+    spec:
+      type: Github
+      spec:
+        type: Push
+        spec:
+          connectorRef: account.Github
+          autoAbortPreviousExecutions: false
+          payloadConditions:
+            - field: targetBranch
+              operator: Equals
+              value: main
+          headerConditions: []
+          repoName: abhid1234/FlightTracker
+          actions: []
+  inputYaml: |
+    pipeline:
+      identifier: FlightTracker_Pipeline
+      properties:
+        ci:
+          codebase:
+            build:
+              type: branch
+              spec:
+                branch: <+trigger.branch>
