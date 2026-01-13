@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Search, Plane } from "lucide-react";
+import { Search } from "lucide-react";
 import { FlightCard } from "@/components/FlightCard";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { AutocompleteInput } from "@/components/AutocompleteInput";
+import { AIRLINES, MOCK_FLIGHTS } from "@/lib/airlines";
 
 const FlightMap = dynamic(() => import("@/components/FlightMap"), {
     ssr: false,
@@ -63,7 +65,6 @@ export default function Home() {
         try {
             const sanitizedQuery = query.replace(/\s+/g, '');
             let url = `/api/flights?query=${encodeURIComponent(sanitizedQuery)}`;
-            // Date logic removed
             const res = await fetch(url);
             const data = await res.json();
             setFlightData(data);
@@ -109,11 +110,7 @@ export default function Home() {
         const originOffset = getTimezoneOffset(originZone);
         const destOffset = getTimezoneOffset(destZone);
 
-        // True duration = Face Difference - (Destination Offset - Origin Offset)
-        // Example: JFK (-5) to LHR (+0). Flght 7h.
-        // Dep 10:00 (Face). Arr 22:00 (Face). FaceDiff = 12h.
-        // DestOffset (0) - OriginOffset (-5) = +5h.
-        // True = 12h - 5h = 7h. Correct.
+        // True duration
         const trueDurationMs = faceDiff - (destOffset - originOffset);
 
         const hours = Math.floor(trueDurationMs / (1000 * 60 * 60));
@@ -143,6 +140,11 @@ export default function Home() {
             return timeStr;
         }
     };
+
+    const autocompleteOptions = [
+        ...MOCK_FLIGHTS.map(f => ({ value: f.code, label: f.label })),
+        ...AIRLINES.map(airline => ({ value: airline.code, label: airline.name }))
+    ];
 
     return (
         <main className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-4 sm:p-24 relative overflow-hidden">
@@ -191,17 +193,18 @@ export default function Home() {
                     </p>
                 </div>
 
-                <form onSubmit={handleSearch} className="w-full max-w-xl mb-12 relative group">
+                <form onSubmit={handleSearch} className="w-full max-w-xl mb-12 relative group z-50">
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500" />
                     <div className="relative flex flex-col sm:flex-row items-center bg-gray-800/50 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-2xl gap-2">
                         <div className="flex-1 flex items-center w-full">
-                            <Search className="w-6 h-6 text-gray-400 ml-4" />
-                            <input
-                                type="text"
+                            <Search className="w-6 h-6 text-gray-400 ml-4 mr-2" />
+                            <AutocompleteInput
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
+                                onSelect={(val) => setQuery(val)}
+                                options={autocompleteOptions}
                                 placeholder="Flight # (e.g., AA100)"
-                                className="w-full bg-transparent border-none outline-none text-white px-4 py-3 text-lg placeholder-gray-500"
+                                inputClassName="text-white px-2 py-3 text-lg placeholder-gray-500"
                             />
                         </div>
                         <button

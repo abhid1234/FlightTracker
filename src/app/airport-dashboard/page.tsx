@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowLeft, Search, Plane, Calendar } from "lucide-react";
+import { AutocompleteInput } from "@/components/AutocompleteInput";
+import { AIRPORT_COORDS } from "@/lib/airports";
 
 interface AirportFlight {
     flight: { iata: string; number: string };
@@ -83,6 +85,11 @@ export default function AirportDashboard() {
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', weekday: 'short' });
     };
 
+    const airportOptions = Object.keys(AIRPORT_COORDS).map(code => ({
+        value: code,
+        label: code // In a real app, we'd have full names here
+    }));
+
     return (
         <main className="min-h-screen bg-gray-900 text-white p-4 sm:p-12 relative overflow-hidden">
             {/* Background Elements */}
@@ -103,16 +110,19 @@ export default function AirportDashboard() {
                 </div>
 
                 {/* Search & Controls */}
-                <div className="flex flex-col md:flex-row gap-6 items-center justify-between bg-white/5 p-6 rounded-2xl border border-white/10 backdrop-blur-md shadow-xl">
+                <div className="flex flex-col md:flex-row gap-6 items-center justify-between bg-white/5 p-6 rounded-2xl border border-white/10 backdrop-blur-md shadow-xl z-50 relative">
                     <form onSubmit={handleSearch} className="relative w-full md:w-96 flex gap-2">
-                        <input
-                            type="text"
-                            value={airportCode}
-                            onChange={(e) => setAirportCode(e.target.value.toUpperCase())}
-                            placeholder="JFK"
-                            className="w-1/2 bg-white/10 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:bg-white/20 transition-all text-white scheme-dark placeholder-gray-400"
-                            maxLength={4}
-                        />
+                        <div className="w-1/2 relative">
+                            <AutocompleteInput
+                                value={airportCode}
+                                onChange={(e) => setAirportCode(e.target.value.toUpperCase())}
+                                onSelect={(val) => setAirportCode(val)}
+                                options={airportOptions}
+                                placeholder="JFK"
+                                containerClassName="bg-white/10 border border-white/20 rounded-xl focus-within:border-blue-500 focus-within:bg-white/20 transition-all"
+                                inputClassName="px-4 py-3 text-white placeholder-gray-400"
+                            />
+                        </div>
                         <div
                             className="relative w-1/2 group cursor-pointer"
                             onClick={triggerDatePicker}
