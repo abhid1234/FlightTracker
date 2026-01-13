@@ -1,0 +1,61 @@
+nohup: ignoring input
+
+> flight-tracker@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.3
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.2s
+ ✓ Compiled /src/middleware in 407ms (73 modules)
+ ✓ Compiled /api/flights in 253ms (53 modules)
+Fetching from: https://api.aviationstack.com/v1/flights?access_key=[REDACTED]&flight_iata=AA100&limit=100
+Aviationstack response status: 200
+Aviationstack data count: 73
+ GET /api/flights?query=AA100 200 in 346ms
+ ○ Compiling / ...
+ ✓ Compiled / in 4.1s (715 modules)
+ GET / 200 in 4592ms
+ ✓ Compiled in 504ms (338 modules)
+ GET / 200 in 130ms
+Fetching from: https://api.aviationstack.com/v1/flights?access_key=[REDACTED]&flight_iata=AA1&limit=100
+Aviationstack response status: 200
+Aviationstack data count: 68
+ GET /api/flights?query=AA1 200 in 1214ms
+ GET / 200 in 64ms
+ ✓ Compiled in 666ms (659 modules)
+ ✓ Compiled in 355ms (659 modules)
+ ✓ Compiled in 401ms (659 modules)
+ GET / 200 in 126ms
+ GET / 200 in 39ms
+ ✓ Compiled /api/flights in 238ms (351 modules)
+Fetching from: https://api.aviationstack.com/v1/flights?access_key=[REDACTED]&flight_iata=AA100&limit=100
+Aviationstack response status: 200
+Aviationstack data count: 73
+ GET /api/flights?query=AA100 200 in 311ms
+Fetching from: https://api.aviationstack.com/v1/flights?access_key=[REDACTED]&flight_iata=BA249&limit=100
+Aviationstack response status: 200
+Aviationstack data count: 100
+ GET /api/flights?query=BA249 200 in 1283ms
+Fetching from: https://api.aviationstack.com/v1/flights?access_key=[REDACTED]&flight_iata=DL444&limit=100
+Aviationstack response status: 200
+Aviationstack data count: 71
+ GET /api/flights?query=DL444 200 in 1047ms
+ ○ Compiling /airport-dashboard ...
+ ✓ Compiled /airport-dashboard in 720ms (685 modules)
+ ✓ Compiled in 1029ms (669 modules)
+ ✓ Compiled in 1407ms (671 modules)
+ GET / 200 in 240ms
+ GET / 200 in 55ms
+ GET / 200 in 46ms
+ ✓ Compiled /api/flights in 102ms (358 modules)
+Fetching from: https://api.aviationstack.com/v1/flights?access_key=[REDACTED]&flight_iata=AA1&limit=100
+Aviationstack response status: 200
+Aviationstack data count: 68
+ GET /api/flights?query=AA1 200 in 167ms
+Fetching from: https://api.aviationstack.com/v1/flights?access_key=[REDACTED]&flight_iata=EK201&limit=100
+Aviationstack response status: 200
+Aviationstack data count: 68
+ GET /api/flights?query=EK201 200 in 1100ms

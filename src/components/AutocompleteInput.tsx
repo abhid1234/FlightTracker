@@ -4,11 +4,12 @@ import { useState, useRef, useEffect } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-interface AutocompleteInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface AutocompleteInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onSelect'> {
     options: { value: string; label: string }[];
     onSelect: (value: string) => void;
     containerClassName?: string;
     inputClassName?: string;
+    startIcon?: React.ReactNode;
 }
 
 export function AutocompleteInput({
@@ -18,6 +19,7 @@ export function AutocompleteInput({
     inputClassName,
     value,
     onChange,
+    startIcon,
     ...props
 }: AutocompleteInputProps) {
     // State for managing suggestion visibility
@@ -58,7 +60,8 @@ export function AutocompleteInput({
     };
 
     return (
-        <div ref={wrapperRef} className={twMerge("relative w-full", containerClassName)}>
+        <div ref={wrapperRef} className={twMerge("relative w-full flex items-center", containerClassName)}>
+            {startIcon && <div className="mr-2 flex-shrink-0">{startIcon}</div>}
             <input
                 type="text"
                 value={value}
@@ -72,12 +75,12 @@ export function AutocompleteInput({
             />
             
             {showSuggestions && (
-                <ul className="absolute z-[100] left-0 right-0 bg-gray-900/95 border border-blue-500/30 rounded-xl mt-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] max-h-64 overflow-y-auto backdrop-blur-2xl divide-y divide-white/5 animate-in fade-in zoom-in-95 duration-200">
+                <ul className="absolute z-[100] top-full left-0 right-0 bg-gray-900/60 border border-white/10 rounded-xl mt-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] max-h-64 overflow-y-auto backdrop-blur-2xl divide-y divide-white/5 animate-in fade-in zoom-in-95 duration-200">
                     {suggestions.map((option) => (
                         <li
                             key={option.value}
                             onClick={() => handleSelect(option.value)}
-                            className="px-5 py-4 text-sm text-gray-300 hover:bg-blue-500/20 hover:text-white cursor-pointer transition-all flex justify-between items-center group/item"
+                            className="px-5 py-4 text-sm text-gray-300 hover:bg-white/10 hover:text-white cursor-pointer transition-all flex justify-between items-center group/item"
                         >
                             <div className="flex flex-col">
                                 <span className="font-bold text-base tracking-tight group-hover/item:text-blue-400 transition-colors">{option.value}</span>

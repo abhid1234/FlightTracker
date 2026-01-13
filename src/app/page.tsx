@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { AutocompleteInput } from "@/components/AutocompleteInput";
 import { AIRLINES, MOCK_FLIGHTS } from "@/lib/airlines";
+import logoImg from "@/assets/logo.png";
 
 const FlightMap = dynamic(() => import("@/components/FlightMap"), {
     ssr: false,
@@ -152,11 +153,12 @@ export default function Home() {
             <div className="absolute top-4 left-4 sm:top-8 sm:left-8 z-20">
                 <div className="p-2 sm:p-4 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl backdrop-blur-md border border-white/10 shadow-2xl hover:border-white/20 transition-all duration-300">
                     <Image
-                        src="/logo.png"
+                        src={logoImg}
                         alt="Flight Tracker Logo"
                         width={511}
                         height={595}
                         className="w-10 h-auto sm:w-16 hover:scale-105 transition-transform duration-300"
+                        placeholder="blur"
                     />
                 </div>
             </div>
@@ -196,8 +198,7 @@ export default function Home() {
                 <form onSubmit={handleSearch} className="w-full max-w-xl mb-12 relative group z-50">
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500" />
                     <div className="relative flex flex-col sm:flex-row items-center bg-gray-800/50 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-2xl gap-2">
-                        <div className="flex-1 flex items-center w-full">
-                            <Search className="w-6 h-6 text-gray-400 ml-4 mr-2" />
+                        <div className="flex-1 w-full">
                             <AutocompleteInput
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
@@ -205,6 +206,7 @@ export default function Home() {
                                 options={autocompleteOptions}
                                 placeholder="Flight # (e.g., AA100)"
                                 inputClassName="text-white px-2 py-3 text-lg placeholder-gray-500"
+                                startIcon={<Search className="w-6 h-6 text-gray-400 ml-4" />}
                             />
                         </div>
                         <button

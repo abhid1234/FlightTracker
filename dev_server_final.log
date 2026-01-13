@@ -1,0 +1,31 @@
+nohup: ignoring input
+
+> flight-tracker@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.3
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1731ms
+ ✓ Compiled /src/middleware in 222ms (73 modules)
+ ✓ Compiled /api/flights in 267ms (53 modules)
+Fetching from: https://api.aviationstack.com/v1/flights?access_key=[REDACTED]&flight_iata=AA100&limit=100
+Aviationstack response status: 200
+Aviationstack data count: 73
+ GET /api/flights?query=AA100 200 in 1573ms
+ ○ Compiling / ...
+ ✓ Compiled / in 1263ms (683 modules)
+ GET / 200 in 1495ms
+ ✓ Compiled in 230ms (335 modules)
+Fetching from: https://api.aviationstack.com/v1/flights?access_key=[REDACTED]&flight_iata=AA100&limit=100
+Aviationstack response status: 200
+Aviationstack data count: 73
+ GET /api/flights?query=AA100 200 in 42ms
+Fetching from: https://api.aviationstack.com/v1/flights?access_key=[REDACTED]&flight_iata=AA300&limit=100
+Aviationstack response status: 200
+Aviationstack data count: 65
+ GET /api/flights?query=AA300 200 in 1218ms
+ ✓ Compiled in 979ms (659 modules)
+[?25h

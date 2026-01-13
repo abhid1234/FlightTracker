@@ -1,0 +1,19 @@
+nohup: ignoring input
+
+> flight-tracker@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.3
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ⚠ Found lockfile missing swc dependencies, patching...
+ ✓ Ready in 2.3s
+ ⚠ Lockfile was successfully patched, please run "npm install" to ensure @next/swc dependencies are downloaded
+ ✓ Compiled /src/middleware in 177ms (73 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 1424ms (653 modules)
+ ✓ Compiled in 190ms (335 modules)
+   Reload env: .env.local
+ ✓ Compiled in 183ms (394 modules)
+[?25h
