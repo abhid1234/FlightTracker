@@ -28,7 +28,17 @@ jobs:
           "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$API_KEY"
       # Main Action
       - name: Run Gemini CLI
+        id: gemini
         uses: google-github-actions/run-gemini-cli@v0.1.18
         with:
             gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
             prompt: ${{ github.event.comment.body }}
+      
+      - name: Comment on PR
+        if: github.event_name == 'issue_comment'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+          RESPONSE: ${{ steps.gemini.outputs.output }}
+        run: |
+          gh pr comment "$PR_NUMBER" --body "$RESPONSE"
