@@ -12,3 +12,10 @@ jobs:
         uses: google-github-actions/run-gemini-cli@v0.1.18
         with:
             gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+      - name: Debug API Key (Curl)
+        env:
+          API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          curl -H "Content-Type: application/json" \
+          -d '{ "contents": [{"parts":[{"text": "Hello"}]}] }' \
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$API_KEY"
