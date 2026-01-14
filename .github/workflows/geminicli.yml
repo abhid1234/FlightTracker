@@ -30,11 +30,11 @@ jobs:
           # Create JSON payload
           jq -n --arg text "$CLEAN_PROMPT" '{contents: [{parts: [{text: $text}]}]}' > payload.json
           
-          # Call API and capture response (Using 1.5 Flash for faster response)
+          # Call API and capture response (Using 2.5 Flash for faster response)
           RESPONSE=$(curl -s -X POST \
             -H "Content-Type: application/json" \
             -d @payload.json \
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-001:generateContent?key=$API_KEY")
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$API_KEY")
           
           echo "API Response: $RESPONSE"
           
