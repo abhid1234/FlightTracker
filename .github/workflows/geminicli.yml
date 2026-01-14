@@ -26,14 +26,32 @@ jobs:
           curl -H "Content-Type: application/json" \
           -d '{ "contents": [{"parts":[{"text": "Hello"}]}] }' \
           "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$API_KEY"
-      # Main Action
-      - name: Run Gemini CLI
+      # Main Action (Manual Curl)
+      - name: Call Gemini API
         id: gemini
-        uses: google-github-actions/run-gemini-cli@v0.1.18
-        with:
-            gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
-            prompt: ${{ github.event.comment.body }}
-      
+        env:
+          API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PROMPT: ${{ github.event.comment.body }}
+        run: |
+          # Create JSON payload securely
+          jq -n \
+            --arg text "$PROMPT" \
+            '{contents: [{parts: [{text: $text}]}]}' > payload.json
+          
+          # Call API
+          RESPONSE=$(curl -s -X POST \
+            -H "Content-Type: application/json" \
+            -d @payload.json \
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$API_KEY")
+          
+          # Extract text using jq
+          OUTPUT=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text // "Error: No response text found"')
+          
+          # Set output
+          echo "output<<EOF" >> $GITHUB_OUTPUT
+          echo "$OUTPUT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Comment on PR
         if: github.event_name == 'issue_comment'
         env:
