@@ -18,6 +18,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Get PR Context
+        id: context
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Dynamically get PR number depending on the event type
+          PR_NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
+        run: |
+          echo "Fetching context for PR #$PR_NUMBER..."
+          
+          # Get PR Diff
+          gh pr diff "$PR_NUMBER" > pr_diff.txt
+          
+          # Get PR Details (Title + Body)
+          gh pr view "$PR_NUMBER" --json title,body > pr_details.json
+          
+          # Save PR_NUMBER for next steps
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+
       - name: Call Gemini API
         id: gemini
         env:
@@ -27,10 +45,36 @@ jobs:
           # Clean prompt (remove @gemini-cli prefix)
           CLEAN_PROMPT=$(echo "$PROMPT" | sed 's/@gemini-cli//g' | xargs)
           
-          # Create JSON payload
-          jq -n --arg text "$CLEAN_PROMPT" '{contents: [{parts: [{text: $text}]}]}' > payload.json
+          # Extract Title and Body
+          TITLE=$(jq -r .title pr_details.json)
+          BODY=$(jq -r .body pr_details.json)
           
-          # Call API and capture response (Using 2.5 Flash for faster response)
+          # Create JSON payload safely using jq to handle large diffs and escaping
+          # We construct a single prompt with all context
+          jq -n \
+            --arg prompt "$CLEAN_PROMPT" \
+            --arg title "$TITLE" \
+            --arg body "$BODY" \
+            --rawfile diff pr_diff.txt \
+            '{ 
+              contents: [{ 
+                parts: [{ 
+                  text: ("You are an expert software engineer assistant.
+          
+          CONTEXT:
+          PR Title: " + $title + "
+          PR Description: " + $body + "
+          
+          USER REQUEST:
+          " + $prompt + "
+          
+          CODE CHANGES (DIFF):
+          " + $diff)
+                }]
+              }]
+            }' > payload.json
+          
+          # Call API (Using Gemini 2.5 Flash for large context and speed)
           RESPONSE=$(curl -s -X POST \
             -H "Content-Type: application/json" \
             -d @payload.json \
@@ -38,8 +82,7 @@ jobs:
           
           echo "API Response: $RESPONSE"
           
-          # Extract text using jq with more robust path
-          # Fallback to error message if candidates are missing
+          # Extract text using jq
           OUTPUT=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text // .error.message // "Error: Gemini API returned an unexpected response format."')
           
           # Handle multi-line output for GITHUB_OUTPUT
@@ -50,8 +93,6 @@ jobs:
       - name: Comment on PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Dynamically get PR number depending on the event type
-          PR_NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
           RESPONSE: ${{ steps.gemini.outputs.output }}
         run: |
           gh pr comment "$PR_NUMBER" --body "🤖 **Gemini CLI Response:**
