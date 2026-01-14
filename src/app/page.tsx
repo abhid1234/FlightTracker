@@ -7,7 +7,7 @@ import { FlightCard } from "@/components/FlightCard";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { AutocompleteInput } from "@/components/AutocompleteInput";
-import { AIRLINES, MOCK_FLIGHTS } from "@/lib/airlines";
+import { MOCK_FLIGHTS } from "@/lib/airlines";
 import logoImg from "@/assets/logo.png";
 
 const FlightMap = dynamic(() => import("@/components/FlightMap"), {
@@ -144,7 +144,6 @@ export default function Home() {
 
     const autocompleteOptions = [
         ...MOCK_FLIGHTS.map(f => ({ value: f.code, label: f.label })),
-        ...AIRLINES.map(airline => ({ value: airline.code, label: airline.name }))
     ];
 
     return (
@@ -205,6 +204,7 @@ export default function Home() {
                                 onSelect={(val) => setQuery(val)}
                                 options={autocompleteOptions}
                                 placeholder="Flight # (e.g., AA100)"
+                                containerClassName="!static"
                                 inputClassName="text-white px-2 py-3 text-lg placeholder-gray-500"
                                 startIcon={<Search className="w-6 h-6 text-gray-400 ml-4" />}
                             />
